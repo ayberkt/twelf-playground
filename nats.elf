@@ -1,0 +1,33 @@
+nat  : type.
+z    : nat.
+s    : nat -> nat.
+
+even   : nat -> type.
+even-z : even z.
+even-s : even N -> even (s (s N)).
+
+plus   : nat -> nat -> nat -> type.
+plus-z : plus z N N.
+plus-s :  plus N1 N2 N3 -> plus (s N1) N2 (s N3).
+
+%mode plus +N1 +N2 -N3.
+%worlds () (plus _ _ _).
+%total N1 (plus N1 _ _).
+
+sum-evens : even N1 -> even N2 -> plus N1 N2 N3 -> even N3 -> type.
+%mode sum-evens +D1 +D2 +D3 -D4.
+
+sez : sum-evens even-z (D : even N2) (plus-z : plus z N2 N2) D.
+
+ses : sum-evens
+       ((even-s D) : even (s (s N1')))
+       (E : even N2)
+       ((plus-s (plus-s Dplus)) : plus (s (s N1')) N2 (s (s N3')))
+       (even-s F)
+    <- sum-evens D E Dplus F.
+
+%worlds () (sum-evens _ _ _ _).
+%total D (sum-evens D _ _ _).
+
+plus-comm : plus N1 N2 N3 -> plus N2 N1 N3 -> type.
+%mode plus-comm +D1 -D2.
