@@ -47,3 +47,11 @@ succ-even-s : succ-even-odd
 
 %worlds () (succ-even-odd _ _).
 %total D (succ-even-odd D _).
+
+succ-odd : odd N -> even (s N) -> type.
+%mode succ-odd +D1 -D2.
+
+succ-odd-z : succ-odd (odd-z : odd (s z)) (even-s even-z).
+succ-odd-s : succ-odd D F -> succ-odd (odd-s D) (even-s F).
+%worlds () (succ-odd _ _).
+%total D (succ-odd D _).
