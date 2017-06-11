@@ -31,3 +31,19 @@ ses : sum-evens
 
 plus-comm : plus N1 N2 N3 -> plus N2 N1 N3 -> type.
 %mode plus-comm +D1 -D2.
+
+odd   : nat -> type.
+odd-z : odd (s z).
+odd-s : odd N -> odd (s (s N)).
+
+succ-even-odd : even N -> odd (s N) -> type.
+%mode succ-even-odd +D1 -D2.
+
+succ-even-z : succ-even-odd even-z odd-z.
+succ-even-s : succ-even-odd
+                ((even-s D) : even (s (s N)))
+                ((odd-s F) : odd (s (s (s N))))
+            <- succ-even-odd D F.
+
+%worlds () (succ-even-odd _ _).
+%total D (succ-even-odd D _).
