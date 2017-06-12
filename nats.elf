@@ -29,8 +29,16 @@ ses : sum-evens
 %worlds () (sum-evens _ _ _ _).
 %total D (sum-evens D _ _ _).
 
+% We need the following lemma for `plus-comm`.
+plus-id-right : {N:nat} (plus N z N) -> type.
+%mode plus-id-right +N -D.
+plus-id-right-z : plus-id-right z plus-z.
+plus-id-right-s : plus-id-right (s N) (plus-s D) <- plus-id-right N D.
+%worlds () (plus-id-right _ _).
+%total N (plus-id-right N _).
+
+% TODO
 plus-comm : plus N1 N2 N3 -> plus N2 N1 N3 -> type.
-%mode plus-comm +D1 -D2.
 
 odd   : nat -> type.
 odd-z : odd (s z).
