@@ -44,17 +44,24 @@ odd   : nat -> type.
 odd-z : odd (s z).
 odd-s : odd N -> odd (s (s N)).
 
+% Lemma 1 for `plus-comm`.
 succ-even-odd : even N -> odd (s N) -> type.
-%mode succ-even-odd +D1 -D2.
+succ-even-z   : succ-even-odd even-z odd-z.
+succ-even-s   : succ-even-odd
+                  ((even-s D) : even (s (s N)))
+                  ((odd-s F) : odd (s (s (s N))))
+              <- succ-even-odd D F.
 
-succ-even-z : succ-even-odd even-z odd-z.
-succ-even-s : succ-even-odd
-                ((even-s D) : even (s (s N)))
-                ((odd-s F) : odd (s (s (s N))))
-            <- succ-even-odd D F.
+% Lemma 2 for `plus-comm`.
+plus-flip : plus N1 N2 N3 -> plus N1 (s N2) (s N3) -> type.
+%mode plus-flip +D1 -D2.
 
-%worlds () (succ-even-odd _ _).
-%total D (succ-even-odd D _).
+plus-flip-z : plus-flip (plus-z : (plus z N2 N2)) plus-z.
+
+plus-flip-s : plus-flip
+                ((plus-s D)  : (plus (s N1') N2 (s N3')))
+                ((plus-s IH) : (plus (s N1') (s N2) (s (s N3'))))
+            <- plus-flip D IH.
 
 succ-odd : odd N -> even (s N) -> type.
 %mode succ-odd +D1 -D2.
