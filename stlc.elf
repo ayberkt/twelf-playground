@@ -1,0 +1,31 @@
+tp   : type.
+unit : tp.
+→  : tp -> tp -> tp. %infix right 10 →.
+
+tm : type.
+empty : tm.
+$ : tm -> tm -> tm. %infix left 10 $.
+λ : tp -> (tm -> tm) -> tm.
+
+∷ : tm -> tp -> type. %infix none 3 ∷.
+empty-ty : empty ∷ unit.
+λ-ty :  ({x:tm} x ∷ T1 -> (E x) ∷ T2) -> (λ T1 E) ∷ (T1 → T2).
+$-ty :  E1 ∷ T1 → T2 -> E2 ∷ T1 -> E1 $ E2 ∷ T2.
+
+val : tm -> type. %postfix 3 val.
+val-empty : empty val.
+val-lam : (λ T E) val.
+
+↦ : tm -> tm -> type. %infix none 3 ↦.
+step-app-1 : E1 ↦ E1' -> E1 $ E2 ↦ E1' $ E2.
+step-app-2 : E2 ↦ E2' -> E1 val -> E1 $ E2 ↦ E1 $ E2'.
+step-β : E2 val -> (λ _ E1) $ E2 ↦ (E1 E2).
+
+⇓ : tm -> tm -> type. %infix none 3 ⇓.
+⇓-val    : E val -> E ⇓ E.
+⇓-reduce : E ↦ E' -> E' ⇓ E'' -> E ⇓ E''.
+
+%solve
+  D : (λ unit ([x] x)) $ ((λ unit ([x] x)) $ ((λ unit ([x] x)) $ empty))
+      ⇓
+      E.
