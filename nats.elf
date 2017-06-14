@@ -29,39 +29,50 @@ ses : sum-evens
 %worlds () (sum-evens _ _ _ _).
 %total D (sum-evens D _ _ _).
 
-% We need the following lemma for `plus-comm`.
-plus-id-right : {N:nat} (plus N z N) -> type.
-%mode plus-id-right +N -D.
-plus-id-right-z : plus-id-right z plus-z.
-plus-id-right-s : plus-id-right (s N) (plus-s D) <- plus-id-right N D.
-%worlds () (plus-id-right _ _).
-%total N (plus-id-right N _).
+% Lemma 1 for `plus-comm`.
+plus-right-id   : {N:nat} (plus N z N) -> type.
+plus-right-id-z : plus-right-id z plus-z.
+plus-right-id-s : plus-right-id (s N') (plus-s IH) <- plus-right-id N' IH.
+%mode plus-right-id +N -D.
+%worlds () (plus-right-id _ _).
+%total N (plus-right-id N _).
 
-% TODO
+% Lemma 2 for `plus-comm`.
+plus-flip : plus N1 N2 N3 -> plus N1 (s N2) (s N3) -> type.
+%mode plus-flip +D1 -D2.
+plus-flip-z : plus-flip (plus-z : (plus z N2 N2)) plus-z.
+plus-flip-s : plus-flip
+                ((plus-s D)  : (plus (s N1') N2 (s N3')))
+                ((plus-s IH) : (plus (s N1') (s N2) (s (s N3'))))
+            <- plus-flip D IH.
+%worlds () (plus-flip _ _).
+%total D (plus-flip D _).
+
 plus-comm : plus N1 N2 N3 -> plus N2 N1 N3 -> type.
+% Proof by induction on the derivation of `plus N1 N2 N3`.
+% Base case. By Lemma 1, we know that this is always the case.
+plus-comm-z :  plus-comm (_ : (plus z N N)) Lemma1
+            <- plus-right-id N Lemma1.
+% Induction step. The last rule used must be plus-s. Since `plus N1 N2 N3`
+% have the form plus (s N1') N2 (s N3'), this means that `plus N1' N2 N3`
+% has some derivation D. By the IH we get a derivation E of `plus N2 N1' N3'`.
+% One application of plus-flip yields `plus N2 (s N1') (s N3')` which is
+% what we needed for this case.
+plus-comm-s : plus-comm (plus-s D) F <- plus-comm D E <- plus-flip E F.
+%mode plus-comm +D1 -D2.
+%worlds () (plus-comm _ _).
+%total D (plus-comm D _).
 
 odd   : nat -> type.
 odd-z : odd (s z).
 odd-s : odd N -> odd (s (s N)).
 
-% Lemma 1 for `plus-comm`.
 succ-even-odd : even N -> odd (s N) -> type.
 succ-even-z   : succ-even-odd even-z odd-z.
 succ-even-s   : succ-even-odd
                   ((even-s D) : even (s (s N)))
                   ((odd-s F) : odd (s (s (s N))))
               <- succ-even-odd D F.
-
-% Lemma 2 for `plus-comm`.
-plus-flip : plus N1 N2 N3 -> plus N1 (s N2) (s N3) -> type.
-%mode plus-flip +D1 -D2.
-
-plus-flip-z : plus-flip (plus-z : (plus z N2 N2)) plus-z.
-
-plus-flip-s : plus-flip
-                ((plus-s D)  : (plus (s N1') N2 (s N3')))
-                ((plus-s IH) : (plus (s N1') (s N2) (s (s N3'))))
-            <- plus-flip D IH.
 
 succ-odd : odd N -> even (s N) -> type.
 %mode succ-odd +D1 -D2.
