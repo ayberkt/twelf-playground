@@ -17,8 +17,8 @@ val-empty : empty val.
 val-lam : (λ T E) val.
 
 ↦ : tm -> tm -> type. %infix none 3 ↦.
-step-app-1 : E1 ↦ E1' -> E1 $ E2 ↦ E1' $ E2.
-step-app-2 : E2 ↦ E2' -> E1 val -> E1 $ E2 ↦ E1 $ E2'.
+step-$-1 : E1 ↦ E1' -> E1 $ E2 ↦ E1' $ E2.
+step-$-2 : E2 ↦ E2' -> E1 val -> E1 $ E2 ↦ E1 $ E2'.
 step-β : E2 val -> (λ _ E1) $ E2 ↦ (E1 E2).
 
 ⇓ : tm -> tm -> type. %infix none 3 ⇓.
