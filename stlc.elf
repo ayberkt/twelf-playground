@@ -39,3 +39,9 @@ preservation-step-$-1 : preservation
                           ($-ty G G'  : E1 $ E2 ∷ T)
                           ($-ty H G'  : E1' $ E2 ∷ T)
                      <- preservation D G H.
+
+preservation-step-$-2 : preservation
+                          (step-$-2 D _  : E1 $ E2 ↦ E1 $ E2')
+                          ($-ty F F'     : E1 $ E2 ∷ T)
+                          ($-ty F G      : E1 $ E2' ∷ T)
+                     <- preservation D F' G.
