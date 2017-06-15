@@ -29,3 +29,13 @@ step-β : E2 val -> (λ _ E1) $ E2 ↦ (E1 E2).
 
 %solve _ :
   (λ (unit → unit) [f] λ unit [x] f $ x) $ (λ unit [x] x) $ empty ⇓ E.
+
+preservation : E ↦ E' -> E ∷ T -> E' ∷ T -> type.
+%mode preservation +D1 +D2 -D3.
+
+
+preservation-step-$-1 : preservation
+                          (step-$-1 D : E1 $ E2 ↦ E1' $ E2)
+                          ($-ty G G'  : E1 $ E2 ∷ T)
+                          ($-ty H G'  : E1' $ E2 ∷ T)
+                     <- preservation D G H.
