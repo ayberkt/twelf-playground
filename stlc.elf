@@ -31,8 +31,6 @@ step-β : E2 val -> (λ _ E1) $ E2 ↦ (E1 E2).
   (λ (unit → unit) [f] λ unit [x] f $ x) $ (λ unit [x] x) $ empty ⇓ E.
 
 preservation : E ↦ E' -> E ∷ T -> E' ∷ T -> type.
-%mode preservation +D1 +D2 -D3.
-
 
 preservation-step-$-1 : preservation
                           (step-$-1 D : E1 $ E2 ↦ E1' $ E2)
@@ -46,5 +44,11 @@ preservation-step-$-2 : preservation
                           ($-ty F G      : E1 $ E2' ∷ T)
                      <- preservation D F' G.
 
-preservation-step-β :
-  preservation (step-β (D : E2 val)) ($-ty (λ-ty HYP) F) (HYP E2 F).
+preservation-step-β : preservation
+                        (step-β (D : E2 val))
+                        ($-ty (λ-ty HYP) F)
+                        (HYP E2 F).
+
+%mode preservation +D1 +D2 -D3.
+%worlds () (preservation _ _ _).
+%total D (preservation D _ _).
