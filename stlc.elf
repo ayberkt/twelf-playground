@@ -45,3 +45,6 @@ preservation-step-$-2 : preservation
                           ($-ty F F'     : E1 $ E2 ∷ T)
                           ($-ty F G      : E1 $ E2' ∷ T)
                      <- preservation D F' G.
+
+preservation-step-β :
+  preservation (step-β (D : E2 val)) ($-ty (λ-ty HYP) F) (HYP E2 F).
